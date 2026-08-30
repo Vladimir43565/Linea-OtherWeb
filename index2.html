@@ -1,0 +1,477 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linea — Website to HTML</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: #07080c;
+    color: #fff;
+    font-family: Inter, Arial, sans-serif;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    left: 50%;
+    top: -350px;
+    transform: translateX(-50%);
+    background: #716cff;
+    filter: blur(190px);
+    opacity: .13;
+    pointer-events: none;
+}
+
+header {
+    max-width: 1150px;
+    margin: auto;
+    padding: 25px;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 850;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: #8586ff;
+}
+
+main {
+    width: min(1000px, calc(100% - 40px));
+    margin: 100px auto;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border: 1px solid #292b3a;
+    background: #11121a;
+    color: #a7a8ff;
+    border-radius: 999px;
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-size: clamp(45px, 8vw, 75px);
+    letter-spacing: -4px;
+    line-height: .95;
+    margin-bottom: 20px;
+}
+
+h1 span {
+    color: #8586ff;
+}
+
+.hero p {
+    color: #92949f;
+    max-width: 650px;
+    margin: auto;
+    line-height: 1.6;
+}
+
+.box {
+    background: #101117;
+    border: 1px solid #242631;
+    border-radius: 22px;
+    padding: 25px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.3);
+}
+
+label {
+    display: block;
+    color: #dfe0e6;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    height: 52px;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid #2b2d3a;
+    outline: none;
+    background: #08090d;
+    color: white;
+    font-size: 15px;
+}
+
+input:focus {
+    border-color: #7778ff;
+    box-shadow: 0 0 0 3px rgba(119,120,255,.1);
+}
+
+button {
+    height: 52px;
+    border: 0;
+    border-radius: 12px;
+    padding: 0 24px;
+    background: #7778ff;
+    color: white;
+    font-weight: 750;
+    cursor: pointer;
+    transition: .2s;
+}
+
+button:hover {
+    background: #8a8bff;
+    transform: translateY(-1px);
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: wait;
+}
+
+.status {
+    display: none;
+    margin-top: 18px;
+    padding: 13px;
+    border-radius: 10px;
+    background: #171821;
+    border: 1px solid #292b39;
+    color: #a7a8b3;
+    font-size: 14px;
+}
+
+.status.show {
+    display: block;
+}
+
+.result {
+    display: none;
+    margin-top: 25px;
+}
+
+.result.show {
+    display: block;
+}
+
+.result-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.result-title {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.small {
+    height: 38px;
+    padding: 0 13px;
+    background: #191a23;
+    border: 1px solid #292b39;
+    font-size: 13px;
+}
+
+.small:hover {
+    background: #232430;
+}
+
+textarea {
+    width: 100%;
+    height: 450px;
+    resize: vertical;
+    border-radius: 13px;
+    border: 1px solid #292b39;
+    background: #08090d;
+    color: #cfd0d8;
+    padding: 18px;
+    outline: none;
+    font: 13px/1.6 Consolas, Monaco, monospace;
+}
+
+.preview {
+    display: none;
+    margin-top: 25px;
+}
+
+.preview.show {
+    display: block;
+}
+
+.preview iframe {
+    width: 100%;
+    height: 550px;
+    border: 1px solid #292b39;
+    border-radius: 13px;
+    background: white;
+}
+
+@media(max-width:700px) {
+    .input-row {
+        flex-direction: column;
+    }
+
+    .input-row button {
+        width: 100%;
+    }
+
+    .result-top {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .actions {
+        width: 100%;
+    }
+
+    .small {
+        flex: 1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Line<span>a</span></div>
+</header>
+
+<main>
+
+<section class="hero">
+    <div class="badge">🌐 Linea Website Converter</div>
+
+    <h1>
+        Website <span>→</span> HTML
+    </h1>
+
+    <p>
+        Paste a website URL and Linea will fetch the page,
+        process its HTML and assets, and create a standalone
+        HTML version with the Linea watermark.
+    </p>
+</section>
+
+<section class="box">
+
+    <label for="url">Website URL</label>
+
+    <div class="input-row">
+        <input
+            id="url"
+            type="url"
+            placeholder="https://example.com"
+            autocomplete="off"
+        >
+
+        <button id="convert">
+            Convert
+        </button>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <div id="result" class="result">
+
+        <div class="result-top">
+
+            <div class="result-title">
+                Generated HTML
+            </div>
+
+            <div class="actions">
+
+                <button class="small" id="copy">
+                    Copy
+                </button>
+
+                <button class="small" id="download">
+                    Download
+                </button>
+
+                <button class="small" id="showPreview">
+                    Preview
+                </button>
+
+            </div>
+        </div>
+
+        <textarea id="output" readonly></textarea>
+
+    </div>
+
+    <div id="preview" class="preview">
+
+        <iframe
+            id="frame"
+            sandbox="allow-scripts"
+        ></iframe>
+
+    </div>
+
+</section>
+
+</main>
+
+<script>
+const urlInput = document.getElementById("url");
+const convert = document.getElementById("convert");
+const status = document.getElementById("status");
+const result = document.getElementById("result");
+const output = document.getElementById("output");
+
+const copy = document.getElementById("copy");
+const download = document.getElementById("download");
+const showPreview = document.getElementById("showPreview");
+
+const preview = document.getElementById("preview");
+const frame = document.getElementById("frame");
+
+function setStatus(text) {
+    status.textContent = text;
+    status.classList.add("show");
+}
+
+function normalizeURL(value) {
+    value = value.trim();
+
+    if (!value) return null;
+
+    if (!/^https?:\/\//i.test(value)) {
+        value = "https://" + value;
+    }
+
+    try {
+        return new URL(value).href;
+    } catch {
+        return null;
+    }
+}
+
+convert.addEventListener("click", async () => {
+
+    const url = normalizeURL(urlInput.value);
+
+    if (!url) {
+        setStatus("❌ Enter a valid website URL.");
+        return;
+    }
+
+    convert.disabled = true;
+    convert.textContent = "Converting...";
+    result.classList.remove("show");
+    preview.classList.remove("show");
+
+    setStatus("⏳ Linea is fetching and rebuilding the website...");
+
+    try {
+
+        const response = await fetch(
+            "/api/convert?url=" + encodeURIComponent(url)
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || "Conversion failed.");
+        }
+
+        output.value = data.html;
+
+        result.classList.add("show");
+
+        setStatus(
+            "✅ Done — the webpage has been converted and the Linea watermark was added."
+        );
+
+    } catch (error) {
+
+        setStatus(
+            "❌ " + error.message
+        );
+
+    } finally {
+
+        convert.disabled = false;
+        convert.textContent = "Convert";
+    }
+});
+
+urlInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+        convert.click();
+    }
+});
+
+copy.addEventListener("click", async () => {
+
+    await navigator.clipboard.writeText(output.value);
+
+    copy.textContent = "Copied ✓";
+
+    setTimeout(() => {
+        copy.textContent = "Copy";
+    }, 1500);
+});
+
+download.addEventListener("click", () => {
+
+    const blob = new Blob(
+        [output.value],
+        { type: "text/html" }
+    );
+
+    const link = document.createElement("a");
+
+    link.href = URL.createObjectURL(blob);
+    link.download = "linea-converted.html";
+
+    link.click();
+
+    URL.revokeObjectURL(link.href);
+});
+
+showPreview.addEventListener("click", () => {
+
+    frame.srcdoc = output.value;
+
+    preview.classList.add("show");
+
+    preview.scrollIntoView({
+        behavior: "smooth"
+    });
+});
+</script>
+
+</body>
+</html>
+```
