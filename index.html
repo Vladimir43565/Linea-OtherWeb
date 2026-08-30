@@ -4,34 +4,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Linea — Website to HTML</title>
+
+<title>Linea — Color Extractor</title>
 
 <style>
 * {
     box-sizing: border-box;
 }
 
+:root {
+    --bg: #08090d;
+    --panel: #101117;
+    --panel2: #15161e;
+    --border: #292b38;
+    --text: #ffffff;
+    --muted: #92949f;
+    --accent: #7778ff;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
-    background: #08090d;
-    color: white;
-    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, Arial, sans-serif;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 650px;
+    height: 650px;
+    left: 50%;
+    top: -400px;
+    transform: translateX(-50%);
+    background: #7778ff;
+    filter: blur(190px);
+    opacity: .12;
+    pointer-events: none;
 }
 
 header {
-    padding: 25px 35px;
-    font-size: 24px;
-    font-weight: 800;
+    max-width: 1200px;
+    margin: auto;
+    padding: 25px;
 }
 
-header span {
+.logo {
+    font-size: 24px;
+    font-weight: 850;
+    letter-spacing: -1px;
+}
+
+.logo span {
     color: #8586ff;
 }
 
 main {
-    width: min(1000px, calc(100% - 40px));
-    margin: 100px auto;
+    width: min(1200px, calc(100% - 40px));
+    margin: 80px auto;
 }
 
 .hero {
@@ -42,7 +73,7 @@ main {
 .badge {
     display: inline-block;
     padding: 8px 14px;
-    border: 1px solid #292b39;
+    border: 1px solid var(--border);
     border-radius: 999px;
     background: #11121a;
     color: #a8a9ff;
@@ -51,7 +82,8 @@ main {
 }
 
 h1 {
-    font-size: clamp(45px, 8vw, 75px);
+    font-size: clamp(45px, 8vw, 78px);
+    line-height: .95;
     letter-spacing: -4px;
     margin: 0 0 20px;
 }
@@ -61,160 +93,255 @@ h1 span {
 }
 
 .hero p {
-    color: #92949f;
     max-width: 650px;
     margin: auto;
+    color: var(--muted);
     line-height: 1.6;
 }
 
-.box {
-    background: #101117;
+/* WORKSPACE */
+
+.workspace {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 20px;
+}
+
+/* COLORS */
+
+.colors-panel,
+.media-panel {
+    background: var(--panel);
     border: 1px solid #242631;
     border-radius: 22px;
-    padding: 25px;
+    padding: 22px;
 }
 
-label {
-    display: block;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 10px;
+.panel-title {
+    font-size: 15px;
+    font-weight: 750;
+    margin-bottom: 18px;
 }
 
-.input-row {
+.color-list {
     display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
-input {
-    flex: 1;
-    height: 52px;
-    padding: 0 16px;
-    border-radius: 12px;
-    border: 1px solid #292b39;
-    background: #08090d;
-    color: white;
-    outline: none;
-    font-size: 15px;
+.empty {
+    color: #666874;
+    font-size: 14px;
+    padding: 50px 10px;
+    text-align: center;
 }
 
-input:focus {
-    border-color: #7778ff;
+.color {
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 13px;
+    background: var(--panel2);
+    border: 1px solid #22242f;
+    cursor: pointer;
+    transition: .2s;
 }
 
-button {
+.color:hover {
+    transform: translateY(-2px);
+    border-color: #3b3d50;
+}
+
+.swatch {
+    width: 52px;
     height: 52px;
-    padding: 0 24px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+.color-info strong {
+    display: block;
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.color-info small {
+    color: #777985;
+    font-size: 12px;
+}
+
+.percent {
+    color: #7778ff;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* MEDIA */
+
+.media-panel {
+    min-height: 500px;
+}
+
+.drop-zone {
+    min-height: 450px;
+    border: 2px dashed #292b39;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.drop-content {
+    padding: 30px;
+}
+
+.upload-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.drop-content h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.drop-content p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.upload-button,
+.analyze-button {
     border: 0;
-    border-radius: 12px;
-    background: #7778ff;
+    border-radius: 11px;
+    padding: 13px 18px;
+    background: var(--accent);
     color: white;
     font-weight: bold;
     cursor: pointer;
 }
 
-button:hover {
+.upload-button:hover,
+.analyze-button:hover {
     background: #898aff;
 }
 
-button:disabled {
-    opacity: .5;
-    cursor: wait;
+#mediaContainer {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    inset: 0;
+}
+
+#mediaContainer img,
+#mediaContainer video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #050609;
+}
+
+/* CONTROLS */
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.analyze-button {
+    flex: 1;
+}
+
+.clear-button {
+    border: 1px solid var(--border);
+    background: #15161e;
+    color: white;
+    border-radius: 11px;
+    padding: 13px 18px;
+    cursor: pointer;
+}
+
+.clear-button:hover {
+    background: #1c1d27;
 }
 
 .status {
     display: none;
-    margin-top: 18px;
-    padding: 13px;
+    margin-top: 15px;
+    padding: 12px;
+    background: #15161e;
+    border: 1px solid var(--border);
     border-radius: 10px;
-    background: #171822;
-    color: #aaa;
+    color: var(--muted);
+    font-size: 13px;
 }
 
 .status.show {
     display: block;
 }
 
-.result {
+/* PALETTE ACTIONS */
+
+.palette-actions {
     display: none;
-    margin-top: 25px;
+    margin-top: 15px;
+    gap: 10px;
 }
 
-.result.show {
-    display: block;
-}
-
-.result-top {
+.palette-actions.show {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
 }
 
-.actions {
-    display: flex;
-    gap: 8px;
+.palette-actions button {
+    flex: 1;
+    border: 1px solid var(--border);
+    background: #15161e;
+    color: white;
+    border-radius: 10px;
+    padding: 11px;
+    cursor: pointer;
 }
 
-.small {
-    height: 38px;
-    padding: 0 13px;
-    background: #191a23;
-    border: 1px solid #292b39;
-    font-size: 13px;
+.palette-actions button:hover {
+    background: #1c1d27;
 }
 
-textarea {
-    width: 100%;
-    height: 500px;
-    resize: vertical;
-    background: #08090d;
-    border: 1px solid #292b39;
-    border-radius: 13px;
-    color: #d0d1d8;
-    padding: 18px;
-    font: 13px/1.6 Consolas, monospace;
-    outline: none;
-}
+/* RESPONSIVE */
 
-.preview {
-    display: none;
-    margin-top: 25px;
-}
-
-.preview.show {
-    display: block;
-}
-
-iframe {
-    width: 100%;
-    height: 550px;
-    border: 1px solid #292b39;
-    border-radius: 13px;
-    background: white;
-}
-
-@media(max-width:700px) {
-    .input-row {
-        flex-direction: column;
+@media(max-width:850px) {
+    .workspace {
+        grid-template-columns: 1fr;
     }
 
-    .input-row button {
-        width: 100%;
+    .colors-panel {
+        order: 2;
     }
 
-    .result-top {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+    .media-panel {
+        order: 1;
+    }
+}
+
+@media(max-width:600px) {
+    main {
+        margin-top: 50px;
     }
 
-    .actions {
-        width: 100%;
-    }
-
-    .small {
-        flex: 1;
+    .drop-zone {
+        min-height: 350px;
     }
 }
 </style>
@@ -223,104 +350,128 @@ iframe {
 <body>
 
 <header>
-    Line<span>a</span>
+    <div class="logo">
+        Line<span>a</span>
+    </div>
 </header>
+
 
 <main>
 
 <section class="hero">
 
     <div class="badge">
-        🌐 Website → HTML
+        🎨 Linea Color Extractor
     </div>
 
     <h1>
-        Turn a website<br>
-        <span>into HTML.</span>
+        Find the colors<br>
+        <span>inside your media.</span>
     </h1>
 
     <p>
-        Paste a public website URL and Linea will retrieve
-        its HTML and prepare it for download.
+        Upload an image or video and Linea will analyze it
+        to find its dominant colors and create a palette.
     </p>
 
 </section>
 
 
-<section class="box">
+<section class="workspace">
 
-    <label for="url">
-        Website URL
-    </label>
+    <!-- COLORS -->
 
-    <div class="input-row">
+    <div class="colors-panel">
 
-        <input
-            id="url"
-            type="url"
-            placeholder="https://example.com"
-        >
+        <div class="panel-title">
+            🎨 Extracted Colors
+        </div>
 
-        <button id="convert">
-            Convert
-        </button>
+        <div id="colorList" class="color-list">
 
-    </div>
-
-
-    <div id="status" class="status"></div>
-
-
-    <div id="result" class="result">
-
-        <div class="result-top">
-
-            <strong>
-                Generated HTML
-            </strong>
-
-            <div class="actions">
-
-                <button
-                    class="small"
-                    id="copy"
-                >
-                    Copy
-                </button>
-
-                <button
-                    class="small"
-                    id="download"
-                >
-                    Download
-                </button>
-
-                <button
-                    class="small"
-                    id="previewButton"
-                >
-                    Preview
-                </button>
-
+            <div class="empty">
+                Upload media and click
+                <b>Show Colors</b>.
             </div>
 
         </div>
 
-        <textarea
-            id="output"
-            readonly
-            spellcheck="false"
-        ></textarea>
+        <div id="paletteActions" class="palette-actions">
+
+            <button id="copyPalette">
+                📋 Copy Palette
+            </button>
+
+            <button id="downloadPalette">
+                💾 Download
+            </button>
+
+        </div>
 
     </div>
 
 
-    <div id="preview" class="preview">
+    <!-- MEDIA -->
 
-        <iframe
-            id="frame"
-            sandbox="allow-scripts"
-        ></iframe>
+    <div class="media-panel">
+
+        <div class="panel-title">
+            🖼️ Your Media
+        </div>
+
+        <div class="drop-zone" id="dropZone">
+
+            <div class="drop-content" id="dropContent">
+
+                <div class="upload-icon">
+                    🖼️
+                </div>
+
+                <h2>
+                    Upload an image or video
+                </h2>
+
+                <p>
+                    PNG, JPG, WEBP, GIF, MP4, WEBM and more
+                </p>
+
+                <label class="upload-button">
+                    Choose File
+                    <input
+                        type="file"
+                        id="fileInput"
+                        accept="image/*,video/*"
+                    >
+                </label>
+
+            </div>
+
+
+            <div id="mediaContainer"></div>
+
+        </div>
+
+
+        <div class="controls">
+
+            <button
+                class="analyze-button"
+                id="analyzeButton"
+                disabled
+            >
+                🎨 Show Colors
+            </button>
+
+            <button
+                class="clear-button"
+                id="clearButton"
+            >
+                Clear
+            </button>
+
+        </div>
+
+        <div id="status" class="status"></div>
 
     </div>
 
@@ -331,161 +482,708 @@ iframe {
 
 <script>
 
-const API_URL = "https://YOUR-BACKEND-DOMAIN.com/api/convert";
+const fileInput =
+    document.getElementById("fileInput");
 
-const urlInput = document.getElementById("url");
-const convert = document.getElementById("convert");
-const status = document.getElementById("status");
-const result = document.getElementById("result");
-const output = document.getElementById("output");
+const mediaContainer =
+    document.getElementById("mediaContainer");
 
-const copy = document.getElementById("copy");
-const download = document.getElementById("download");
-const previewButton = document.getElementById("previewButton");
+const dropContent =
+    document.getElementById("dropContent");
 
-const preview = document.getElementById("preview");
-const frame = document.getElementById("frame");
+const analyzeButton =
+    document.getElementById("analyzeButton");
+
+const clearButton =
+    document.getElementById("clearButton");
+
+const colorList =
+    document.getElementById("colorList");
+
+const status =
+    document.getElementById("status");
+
+const paletteActions =
+    document.getElementById("paletteActions");
+
+const copyPalette =
+    document.getElementById("copyPalette");
+
+const downloadPalette =
+    document.getElementById("downloadPalette");
+
+let currentFile = null;
+let currentMedia = null;
+let currentColors = [];
 
 
-function showStatus(message) {
+/* STATUS */
+
+function setStatus(message) {
     status.textContent = message;
     status.classList.add("show");
 }
 
 
-function normalizeURL(value) {
+/* FILE */
 
-    value = value.trim();
+fileInput.addEventListener("change", event => {
 
-    if (!value) {
-        return null;
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    loadFile(file);
+});
+
+
+function loadFile(file) {
+
+    currentFile = file;
+
+    mediaContainer.innerHTML = "";
+
+    const url =
+        URL.createObjectURL(file);
+
+    if (file.type.startsWith("image/")) {
+
+        const image =
+            document.createElement("img");
+
+        image.src = url;
+
+        image.onload = () => {
+            currentMedia = image;
+        };
+
+        mediaContainer.appendChild(image);
+
+    } else if (file.type.startsWith("video/")) {
+
+        const video =
+            document.createElement("video");
+
+        video.src = url;
+        video.controls = true;
+        video.muted = true;
+        video.playsInline = true;
+
+        video.addEventListener(
+            "loadeddata",
+            () => {
+                currentMedia = video;
+            }
+        );
+
+        mediaContainer.appendChild(video);
+
+    } else {
+
+        setStatus(
+            "❌ Unsupported file type."
+        );
+
+        return;
     }
 
-    if (!/^https?:\/\//i.test(value)) {
-        value = "https://" + value;
-    }
+    dropContent.style.display = "none";
+    mediaContainer.style.display = "block";
 
-    try {
-        return new URL(value).href;
-    } catch {
-        return null;
+    analyzeButton.disabled = false;
+
+    setStatus(
+        "✅ Media loaded. Click Show Colors."
+    );
+}
+
+
+/* ANALYZE */
+
+analyzeButton.addEventListener(
+    "click",
+    async () => {
+
+        if (!currentMedia) {
+            return;
+        }
+
+        analyzeButton.disabled = true;
+        analyzeButton.textContent =
+            "Analyzing...";
+
+        setStatus(
+            "⏳ Analyzing colors..."
+        );
+
+        try {
+
+            const colors =
+                await extractColors(
+                    currentMedia,
+                    currentFile
+                );
+
+            currentColors = colors;
+
+            displayColors(colors);
+
+            setStatus(
+                "✅ Color palette generated."
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            setStatus(
+                "❌ Couldn't analyze this media."
+            );
+
+        }
+
+        analyzeButton.disabled = false;
+        analyzeButton.textContent =
+            "🎨 Show Colors";
+    }
+);
+
+
+/* COLOR EXTRACTION */
+
+async function extractColors(media, file) {
+
+    const canvas =
+        document.createElement("canvas");
+
+    const ctx =
+        canvas.getContext("2d", {
+            willReadFrequently: true
+        });
+
+    let width;
+    let height;
+
+    if (file.type.startsWith("video/")) {
+
+        const video = media;
+
+        width = video.videoWidth;
+        height = video.videoHeight;
+
+        canvas.width = width;
+        canvas.height = height;
+
+        /*
+         * Sample multiple frames from the video.
+         */
+
+        const samples = [];
+
+        const duration =
+            video.duration || 1;
+
+        const frameCount = 8;
+
+        for (
+            let i = 0;
+            i < frameCount;
+            i++
+        ) {
+
+            video.currentTime =
+                (duration / frameCount) * i;
+
+            await new Promise(resolve => {
+
+                video.addEventListener(
+                    "seeked",
+                    resolve,
+                    { once: true }
+                );
+
+            });
+
+            ctx.drawImage(
+                video,
+                0,
+                0,
+                width,
+                height
+            );
+
+            samples.push(
+                ctx.getImageData(
+                    0,
+                    0,
+                    width,
+                    height
+                ).data
+            );
+        }
+
+        return analyzePixels(samples);
+
+    } else {
+
+        width = media.naturalWidth;
+        height = media.naturalHeight;
+
+        const scale =
+            Math.min(
+                1,
+                700 / Math.max(width, height)
+            );
+
+        canvas.width =
+            Math.max(1, Math.floor(width * scale));
+
+        canvas.height =
+            Math.max(1, Math.floor(height * scale));
+
+        ctx.drawImage(
+            media,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+        const pixels =
+            ctx.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            ).data;
+
+        return analyzePixels([pixels]);
     }
 }
 
 
-convert.addEventListener("click", async () => {
+/* PIXEL ANALYSIS */
 
-    const url = normalizeURL(urlInput.value);
+function analyzePixels(pixelArrays) {
 
-    if (!url) {
-        showStatus("❌ Enter a valid website URL.");
-        return;
+    const buckets = new Map();
+
+    for (const pixels of pixelArrays) {
+
+        for (
+            let i = 0;
+            i < pixels.length;
+            i += 16
+        ) {
+
+            const r = pixels[i];
+            const g = pixels[i + 1];
+            const b = pixels[i + 2];
+            const a = pixels[i + 3];
+
+            if (a < 150) continue;
+
+            /*
+             * Quantize colors so similar colors
+             * are grouped together.
+             */
+
+            const qr =
+                Math.round(r / 24) * 24;
+
+            const qg =
+                Math.round(g / 24) * 24;
+
+            const qb =
+                Math.round(b / 24) * 24;
+
+            const key =
+                `${qr},${qg},${qb}`;
+
+            buckets.set(
+                key,
+                (buckets.get(key) || 0) + 1
+            );
+        }
     }
 
-    convert.disabled = true;
-    convert.textContent = "Converting...";
 
-    result.classList.remove("show");
-    preview.classList.remove("show");
+    const sorted =
+        [...buckets.entries()]
+            .sort(
+                (a, b) =>
+                    b[1] - a[1]
+            );
 
-    showStatus("⏳ Fetching website...");
 
-    try {
-
-        const response = await fetch(
-            API_URL + "?url=" + encodeURIComponent(url)
+    const total =
+        sorted.reduce(
+            (sum, item) =>
+                sum + item[1],
+            0
         );
 
-        const data = await response.json();
 
-        if (!response.ok) {
-            throw new Error(
-                data.error || "Conversion failed."
+    /*
+     * Select visually different colors.
+     */
+
+    const selected = [];
+
+    for (const [key, count] of sorted) {
+
+        const [r, g, b] =
+            key.split(",").map(Number);
+
+        const tooSimilar =
+            selected.some(color =>
+                colorDistance(
+                    [r, g, b],
+                    color.rgb
+                ) < 55
+            );
+
+        if (tooSimilar) {
+            continue;
+        }
+
+        selected.push({
+
+            rgb: [r, g, b],
+
+            count,
+
+            percentage:
+                ((count / total) * 100)
+                    .toFixed(1)
+
+        });
+
+        if (selected.length >= 10) {
+            break;
+        }
+    }
+
+    return selected;
+}
+
+
+/* COLOR DISTANCE */
+
+function colorDistance(a, b) {
+
+    return Math.sqrt(
+        Math.pow(a[0] - b[0], 2) +
+        Math.pow(a[1] - b[1], 2) +
+        Math.pow(a[2] - b[2], 2)
+    );
+}
+
+
+/* RGB → HEX */
+
+function rgbToHex(r, g, b) {
+
+    return "#" +
+        [r, g, b]
+            .map(value =>
+                value
+                    .toString(16)
+                    .padStart(2, "0")
+            )
+            .join("")
+            .toUpperCase();
+}
+
+
+/* RGB → HSL */
+
+function rgbToHsl(r, g, b) {
+
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max =
+        Math.max(r, g, b);
+
+    const min =
+        Math.min(r, g, b);
+
+    let h;
+    let s;
+
+    const l =
+        (max + min) / 2;
+
+    if (max === min) {
+
+        h = 0;
+        s = 0;
+
+    } else {
+
+        const d = max - min;
+
+        s =
+            l > .5
+                ? d / (2 - max - min)
+                : d / (max + min);
+
+        switch(max) {
+
+            case r:
+                h =
+                    (g - b) / d +
+                    (g < b ? 6 : 0);
+                break;
+
+            case g:
+                h =
+                    (b - r) / d + 2;
+                break;
+
+            case b:
+                h =
+                    (r - g) / d + 4;
+                break;
+        }
+
+        h /= 6;
+    }
+
+    return [
+        Math.round(h * 360),
+        Math.round(s * 100),
+        Math.round(l * 100)
+    ];
+}
+
+
+/* DISPLAY */
+
+function displayColors(colors) {
+
+    colorList.innerHTML = "";
+
+    colors.forEach(color => {
+
+        const [r, g, b] =
+            color.rgb;
+
+        const hex =
+            rgbToHex(r, g, b);
+
+        const hsl =
+            rgbToHsl(r, g, b);
+
+        const item =
+            document.createElement("div");
+
+        item.className = "color";
+
+        item.innerHTML = `
+
+            <div
+                class="swatch"
+                style="background:${hex}"
+            ></div>
+
+            <div class="color-info">
+
+                <strong>${hex}</strong>
+
+                <small>
+                    RGB ${r}, ${g}, ${b}
+                    <br>
+                    HSL ${hsl[0]}°, ${hsl[1]}%, ${hsl[2]}%
+                </small>
+
+            </div>
+
+            <div class="percent">
+                ${color.percentage}%
+            </div>
+
+        `;
+
+        item.addEventListener(
+            "click",
+            async () => {
+
+                await navigator.clipboard.writeText(
+                    hex
+                );
+
+                setStatus(
+                    `📋 ${hex} copied!`
+                );
+            }
+        );
+
+        colorList.appendChild(item);
+    });
+
+    paletteActions.classList.add("show");
+}
+
+
+/* COPY PALETTE */
+
+copyPalette.addEventListener(
+    "click",
+    async () => {
+
+        const palette =
+            currentColors
+                .map(color => {
+
+                    const [r, g, b] =
+                        color.rgb;
+
+                    return rgbToHex(r, g, b);
+
+                })
+                .join("\n");
+
+        await navigator.clipboard.writeText(
+            palette
+        );
+
+        setStatus(
+            "📋 Palette copied!"
+        );
+    }
+);
+
+
+/* DOWNLOAD */
+
+downloadPalette.addEventListener(
+    "click",
+    () => {
+
+        const palette =
+            currentColors
+                .map(color => {
+
+                    const [r, g, b] =
+                        color.rgb;
+
+                    return rgbToHex(r, g, b);
+
+                })
+                .join("\n");
+
+        const blob =
+            new Blob(
+                [palette],
+                { type: "text/plain" }
+            );
+
+        const link =
+            document.createElement("a");
+
+        link.href =
+            URL.createObjectURL(blob);
+
+        link.download =
+            "linea-palette.txt";
+
+        link.click();
+
+        URL.revokeObjectURL(
+            link.href
+        );
+    }
+);
+
+
+/* CLEAR */
+
+clearButton.addEventListener(
+    "click",
+    () => {
+
+        if (currentMedia) {
+
+            URL.revokeObjectURL(
+                currentMedia.src
             );
         }
 
-        output.value = data.html;
+        currentFile = null;
+        currentMedia = null;
+        currentColors = [];
 
-        result.classList.add("show");
+        mediaContainer.innerHTML = "";
+        mediaContainer.style.display =
+            "none";
 
-        showStatus(
-            "✅ Website converted successfully."
+        dropContent.style.display =
+            "block";
+
+        analyzeButton.disabled = true;
+
+        colorList.innerHTML = `
+            <div class="empty">
+                Upload media and click
+                <b>Show Colors</b>.
+            </div>
+        `;
+
+        paletteActions.classList.remove(
+            "show"
         );
 
-    } catch (error) {
-
-        showStatus(
-            "❌ " + error.message
+        status.classList.remove(
+            "show"
         );
 
-    } finally {
-
-        convert.disabled = false;
-        convert.textContent = "Convert";
-
+        fileInput.value = "";
     }
+);
 
-});
 
+/* DRAG & DROP */
 
-urlInput.addEventListener("keydown", event => {
+const dropZone =
+    document.getElementById("dropZone");
 
-    if (event.key === "Enter") {
-        convert.click();
+dropZone.addEventListener(
+    "dragover",
+    event => {
+        event.preventDefault();
+        dropZone.style.borderColor =
+            "#7778ff";
     }
+);
 
-});
+dropZone.addEventListener(
+    "dragleave",
+    () => {
+        dropZone.style.borderColor =
+            "";
+    }
+);
 
+dropZone.addEventListener(
+    "drop",
+    event => {
 
-copy.addEventListener("click", async () => {
+        event.preventDefault();
 
-    await navigator.clipboard.writeText(
-        output.value
-    );
+        dropZone.style.borderColor =
+            "";
 
-    copy.textContent = "Copied ✓";
+        const file =
+            event.dataTransfer.files[0];
 
-    setTimeout(() => {
-        copy.textContent = "Copy";
-    }, 1500);
-
-});
-
-
-download.addEventListener("click", () => {
-
-    const blob = new Blob(
-        [output.value],
-        { type: "text/html" }
-    );
-
-    const link = document.createElement("a");
-
-    link.href = URL.createObjectURL(blob);
-    link.download = "linea-converted.html";
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
-    URL.revokeObjectURL(link.href);
-
-});
-
-
-previewButton.addEventListener("click", () => {
-
-    frame.srcdoc = output.value;
-
-    preview.classList.add("show");
-
-    preview.scrollIntoView({
-        behavior: "smooth"
-    });
-
-});
+        if (file) {
+            loadFile(file);
+        }
+    }
+);
 
 </script>
 
